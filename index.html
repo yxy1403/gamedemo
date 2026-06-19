@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>绿野迷踪 🌾</title>
+  <link rel="stylesheet" href="game.css">
+</head>
+<body>
+  <!-- ============ 主菜单 ============ -->
+  <div id="mainMenu" class="menu-screen">
+    <div class="menu-content">
+      <h1 class="game-title">🌾 绿野迷踪</h1>
+      <p class="game-subtitle">2.5D 卡通风格 · 大型地图 · 随机刷怪 · Boss挑战 · 撤离带走宝物</p>
+
+      <div class="menu-stats">
+        <span>💰 金币：<b id="menuGold">0</b></span>
+        <span>🎒 背包容量：<b id="menuBagCapacity">10</b></span>
+        <span>📖 图鉴进度：<b id="menuCollection">0/0</b></span>
+      </div>
+
+      <div class="menu-actions">
+        <button id="startGameBtn" class="menu-btn">🎯 开始探险</button>
+        <button id="shopBtn" class="menu-btn secondary">🛒 装备商店</button>
+        <button id="collectionBtn" class="menu-btn secondary">📖 收藏图鉴</button>
+        <button id="inventoryBtn" class="menu-btn secondary">📦 仓库</button>
+      </div>
+
+      <!-- ============ 密钥系统 ============ -->
+      <div class="keycode-panel" id="keycodePanel">
+        <div class="keycode-row">
+          <input id="keycodeInput" type="password" placeholder="输入密钥..." autocomplete="off" maxlength="20">
+          <button id="keycodeSubmitBtn" class="menu-btn tiny">🔐 提交</button>
+          <button id="keycodeToggleBtn" class="menu-btn tiny hidden">📢 退出超高爆率模式</button>
+        </div>
+        <div class="keycode-status" id="keycodeStatus">💤 普通模式</div>
+      </div>
+
+      <div class="menu-hints">
+        <p>💡 提示：WASD 移动 · 鼠标瞄准射击 · E 搜索/拾取/撤离 · 1 小血包 · 2 大血包 · 3 护甲维修 · 4 手雷 · ESC 打开背包</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 装备选择 ============ -->
+  <div id="loadoutScreen" class="menu-screen hidden">
+    <div class="menu-content">
+      <h2 class="screen-title">⚔️ 装备与补给</h2>
+      <p class="screen-subtitle">选择要带入地图的物品（点击卡片选择 · 再次点击同一张取消）</p>
+      <div id="loadoutGold" class="loadout-gold">💰 金币：<b>0</b></div>
+
+      <div class="loadout-sections">
+        <div class="loadout-section">
+          <h3>🔫 武器（独立槽位）</h3>
+          <div id="weaponGrid" class="item-grid"></div>
+          <div class="equipped-weapon" id="equippedWeapon">
+            <div class="equip-slot-label">已装备：</div>
+            <div id="equippedWeaponSlot" class="equip-slot empty"></div>
+            <div id="equippedWeaponName" class="equip-slot-name">未选择</div>
+          </div>
+        </div>
+        <div class="loadout-section">
+          <h3>🛡️ 护甲（独立槽位）</h3>
+          <div id="armorGrid" class="item-grid"></div>
+          <div class="equipped-armor" id="equippedArmor">
+            <div class="equip-slot-label">已装备：</div>
+            <div id="equippedArmorSlot" class="equip-slot empty"></div>
+            <div id="equippedArmorName" class="equip-slot-name">未选择</div>
+          </div>
+        </div>
+        <div class="loadout-section">
+          <h3>🧪 补给（占用背包格子）</h3>
+          <div id="supplyGrid" class="item-grid"></div>
+        </div>
+      </div>
+
+      <!-- 物品详情悬浮窗由JS创建 -->
+
+      <div class="current-loadout">
+        <h3>📋 背包（<span id="loadoutCount">0</span> / <span id="loadoutMax">10</span>）<small style="font-size:0.55em;color:#fbbf24;margin-left:8px">武器和护甲不占格子</small></h3>
+        <div id="loadoutSlots" class="loadout-slots"></div>
+      </div>
+
+      <div class="loadout-buttons">
+        <button id="clearLoadoutBtn" class="menu-btn secondary">🔄 清空装备</button>
+        <button id="confirmLoadoutBtn" class="menu-btn">🚀 确认进入</button>
+        <button id="backToMenuBtn" class="menu-btn secondary">↩️ 返回主菜单</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 游戏主界面 ============ -->
+  <div id="gameScreen" class="game-screen hidden">
+    <div class="game-hud">
+      <div class="hud-left">
+        <div class="hud-item">❤️ 生命：<span id="health">100</span></div>
+        <div class="hud-item">🛡️ 护甲：<span id="armor">0</span></div>
+        <div class="hud-item">🔫 武器：<span id="weapon">无</span></div>
+      </div>
+      <div class="hud-center">
+        <div class="hud-item">💀 击杀：<span id="kills">0</span></div>
+        <div class="hud-item">⏱️ 时间：<span id="survivalTime">0</span></div>
+      </div>
+      <div class="hud-right">
+        <div class="hud-item">🎒 背包：<span id="inventoryCount">0</span></div>
+        <div class="hud-item">💰 发现：<span id="goldFound">0</span></div>
+      </div>
+      <div class="supply-hud">
+        <div class="supply-hud-item" title="小血包 [1]">🧪 <span id="supplyCount1">0</span></div>
+        <div class="supply-hud-item" title="大血包 [2]">💉 <span id="supplyCount2">0</span></div>
+        <div class="supply-hud-item" title="护甲维修 [3]">🔧 <span id="supplyCount3">0</span></div>
+        <div class="supply-hud-item" title="手雷 [4]">💣 <span id="supplyCount4">0</span></div>
+      </div>
+      <div class="minimap-container">
+        <canvas id="minimapCanvas" class="minimap-canvas"></canvas>
+        <div class="minimap-legend">
+          <span class="legend-item"><span class="legend-dot player"></span> 玩家</span>
+          <span class="legend-item"><span class="legend-dot boss"></span> Boss</span>
+          <span class="legend-item"><span class="legend-dot escape"></span> 撤离点</span>
+        </div>
+      </div>
+    </div>
+
+    <canvas id="gameCanvas"></canvas>
+
+    <!-- 搜索提示 -->
+    <div id="searchPrompt" class="prompt-box hidden">
+      按 <span class="key">E</span> 搜索
+    </div>
+
+    <!-- 拾取提示 -->
+    <div id="pickupPrompt" class="prompt-box hidden">
+      按 <span class="key">E</span> 拾取
+    </div>
+
+    <!-- 撤离提示 -->
+    <div id="escapePrompt" class="prompt-box escape hidden">
+      🚪 发现撤离点！按 <span class="key">E</span> 撤离（当前价值：💰 <span id="escapeGold">0</span>）
+    </div>
+
+    <!-- 搜索进度条 -->
+    <div id="searchProgress" class="search-progress-overlay hidden">
+      <div class="search-progress-label" id="searchLabel">🔍 搜索中...</div>
+      <div class="search-progress-bar">
+        <div id="searchProgressFill" class="search-progress-fill"></div>
+      </div>
+    </div>
+
+    <!-- 怪物对话气泡 -->
+    <div id="monsterDialog" class="dialog-bubble hidden" style="display:none;">
+      <span id="dialogContent"></span>
+    </div>
+
+    <!-- 拾取日志容器 -->
+    <div id="lootLog" class="loot-log"></div>
+
+    <!-- 拾取物品选择面板 -->
+    <div id="lootModal" class="loot-modal hidden">
+      <div class="loot-modal-header">
+        <div>
+          <div class="loot-modal-title" id="lootModalTitle">📦 搜索结果</div>
+          <div class="loot-modal-info" id="lootModalInfo">点击物品选择性拾取</div>
+        </div>
+        <button id="lootCloseBtn" class="loot-close-btn">×</button>
+      </div>
+      <div id="lootItemsList" class="loot-items-list"></div>
+      <div class="loot-modal-footer">
+        <div class="loot-modal-summary">
+          背包容量：<span class="total"><span id="lootBagUsed">0</span> / <span id="lootBagMax">10</span></span>
+        </div>
+        <div class="loot-modal-actions">
+          <button id="lootPickAllBtn" class="loot-btn all">全部拾取</button>
+          <button id="lootCloseBtn2" class="loot-btn primary">完成</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 局内背包（可丢弃） -->
+    <div id="inventoryPanel" class="inventory-panel hidden">
+      <div class="inventory-header">
+        <h3>🎒 背包</h3>
+        <button id="closeInventory" class="close-btn">×</button>
+      </div>
+      <div id="inventoryGrid" class="inventory-grid"></div>
+      <div class="inventory-total">💰 总价值：<span id="inventoryValue">0</span></div>
+    </div>
+  </div>
+
+  <!-- ============ 商店模态框 ============ -->
+  <div id="shopModal" class="modal-overlay hidden">
+    <div class="modal-content shop-modal">
+      <div class="modal-header-row">
+        <h2>🛒 装备商店</h2>
+        <button id="closeShopModal" class="close-btn">×</button>
+      </div>
+      <p class="modal-subtitle">购买武器、护甲和补给品，升级你的背包容量</p>
+      <div id="shopGold" class="shop-gold">💰 金币：<b>0</b></div>
+
+      <div class="shop-tabs">
+        <button class="shop-tab active" data-tab="weapons">🔫 武器</button>
+        <button class="shop-tab" data-tab="armor">🛡️ 护甲</button>
+        <button class="shop-tab" data-tab="supplies">🧪 补给</button>
+        <button class="shop-tab" data-tab="upgrade">🎒 升级</button>
+      </div>
+
+      <div id="shopContent" class="shop-content"></div>
+    </div>
+  </div>
+
+  <!-- ============ 仓库模态框 ============ -->
+  <div id="warehouseModal" class="modal-overlay hidden">
+    <div class="modal-content warehouse-modal">
+      <div class="modal-header-row">
+        <h2>📦 仓库</h2>
+        <button id="closeWarehouseModal" class="close-btn">×</button>
+      </div>
+      <p class="modal-subtitle">查看你从地图中带出的战利品，可选择出售换取金币</p>
+      <div id="warehouseGold" class="warehouse-gold">💰 金币：<b>0</b></div>
+
+      <div id="warehouseContent" class="warehouse-content"></div>
+    </div>
+  </div>
+
+  <!-- ============ 图鉴模态框 ============ -->
+  <div id="collectionModal" class="modal-overlay hidden">
+    <div class="modal-content collection-modal">
+      <div class="modal-header-row">
+        <h2 id="collectionTitle">📖 收藏图鉴</h2>
+        <button id="closeCollectionModal" class="close-btn">×</button>
+      </div>
+      <p class="modal-subtitle">收集各类珍品可获得永久属性加成</p>
+
+      <div class="collection-stats-row">
+        <div class="col-stat">
+          <div class="col-stat-val" id="colTotalCount">0</div>
+          <div class="col-stat-label">已收集</div>
+        </div>
+        <div class="col-stat">
+          <div class="col-stat-val" id="colTotalBonus">0</div>
+          <div class="col-stat-label">总属性加成</div>
+        </div>
+      </div>
+
+      <div class="collection-bonus-panel">
+        <h4>🔮 当前图鉴属性加成</h4>
+        <div id="collectionBonusList" class="bonus-list"></div>
+      </div>
+
+      <div id="collectionContent" class="collection-content"></div>
+    </div>
+  </div>
+
+  <!-- ============ 撤离成功 ============ -->
+  <div id="gameOverModal" class="modal-overlay hidden">
+    <div class="modal-content gameover">
+      <div class="gameover-icon">🚀</div>
+      <h2>✨ 撤离成功！</h2>
+      <div class="gameover-stats">
+        <p>📦 带回物品：<b id="finalItems">0</b> 件</p>
+        <p>💀 击杀数：<b id="finalKills">0</b></p>
+        <p>⏱️ 探险时间：<b id="finalTime">0</b> 秒</p>
+      </div>
+      <button id="gameOverBtn" class="menu-btn">🔄 继续探索</button>
+    </div>
+  </div>
+
+  <!-- ============ 死亡 ============ -->
+  <div id="deathModal" class="modal-overlay hidden">
+    <div class="modal-content death">
+      <div class="gameover-icon">💀</div>
+      <h2>你被击杀了</h2>
+      <p class="death-message">所有携带的物品都遗留在地图上了...</p>
+      <button id="deathBtn" class="menu-btn">🔄 重新开始</button>
+    </div>
+  </div>
+
+  <!-- 预加载关键图片资源（武器、容器、地图素材等），提升游戏内渲染速度 -->
+  <!-- 武器 -->
+  <link rel="preload" as="image" href="weapon/hql.png">
+  <link rel="preload" as="image" href="weapon/yydj.png">
+  <link rel="preload" as="image" href="weapon/sq.png">
+  <link rel="preload" as="image" href="weapon/tjbq.png">
+  <link rel="preload" as="image" href="weapon/wsd.png">
+  <link rel="preload" as="image" href="weapon/xdq.png">
+  <!-- 容器 -->
+  <link rel="preload" as="image" href="folder/mx.png">
+  <link rel="preload" as="image" href="folder/mt.png">
+  <link rel="preload" as="image" href="folder/ljt.png">
+  <link rel="preload" as="image" href="folder/stb.png">
+  <link rel="preload" as="image" href="folder/dyx.png">
+  <!-- 地图地板 -->
+  <link rel="preload" as="image" href="floor/草地1.png">
+  <link rel="preload" as="image" href="floor/草地2.png">
+  <link rel="preload" as="image" href="floor/草地3.png">
+  <link rel="preload" as="image" href="floor/草地4.png">
+  <link rel="preload" as="image" href="floor/草地5.png">
+  <link rel="preload" as="image" href="floor/草地6.png">
+  <link rel="preload" as="image" href="floor/草地7.png">
+  <link rel="preload" as="image" href="floor/草地8.png">
+  <!-- 建筑物 -->
+  <link rel="preload" as="image" href="building/帐篷.png">
+  <link rel="preload" as="image" href="building/帐篷2.png">
+  <link rel="preload" as="image" href="building/帐篷3.png">
+  <link rel="preload" as="image" href="building/帐篷4.png">
+  <link rel="preload" as="image" href="building/房子1.png">
+  <link rel="preload" as="image" href="building/房子2.png">
+  <link rel="preload" as="image" href="building/房子3.png">
+  <link rel="preload" as="image" href="building/房子4.png">
+  <!-- 障碍物 -->
+  <link rel="preload" as="image" href="building/小推车.png">
+  <link rel="preload" as="image" href="building/小车2.png">
+  <link rel="preload" as="image" href="building/水井.png">
+  <link rel="preload" as="image" href="building/铁毡.png">
+
+  <!-- 模块化JS引入 -->
+  <script src="js/config.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/QuadTree.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

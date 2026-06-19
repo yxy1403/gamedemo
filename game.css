@@ -1,0 +1,1653 @@
+/* 全局样式 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ============ 菜单/装备/商店/仓库 —— 横向自适应布局 ============ */
+.menu-screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  z-index: 100;
+  padding: 20px;
+}
+
+.menu-content {
+  color: white;
+  padding: 30px 40px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  width: min(1400px, 95vw);
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 主菜单 */
+.main-menu-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.game-title {
+  font-size: 3rem;
+  margin-bottom: 6px;
+  text-shadow: 0 0 20px rgba(255, 200, 100, 0.5);
+  text-align: center;
+}
+
+.game-subtitle {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.menu-stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+
+.menu-stats span {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 10px 22px;
+  border-radius: 22px;
+}
+
+/* 按钮横向并排（3个） */
+.menu-actions {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.menu-btn {
+  flex: 1 1 0;
+  min-width: 180px;
+  padding: 16px 28px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s;
+  background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+  color: white;
+  margin: 0;
+}
+
+.menu-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
+}
+
+.menu-btn.secondary {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.menu-btn.secondary:hover {
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
+}
+
+.menu-btn.tiny {
+  flex: none;
+  min-width: 100px;
+  padding: 10px 16px;
+  font-size: 0.9rem;
+  background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+}
+
+/* ============ 密钥面板 ============ */
+.keycode-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin: 15px 0 0;
+  padding: 14px 20px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.keycode-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+#keycodeInput {
+  padding: 10px 14px;
+  font-size: 0.95rem;
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  outline: none;
+  width: 220px;
+  letter-spacing: 3px;
+  transition: border 0.2s;
+}
+
+#keycodeInput:focus {
+  border-color: #a29bfe;
+  box-shadow: 0 0 12px rgba(162, 155, 254, 0.4);
+}
+
+.keycode-status {
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 6px 18px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.keycode-status.active {
+  background: linear-gradient(135deg, #ffd700, #ff6b6b);
+  color: #1a1a2e;
+  animation: pulse-highdrop 1.6s infinite ease-in-out;
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.3);
+}
+
+@keyframes pulse-highdrop {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 10px rgba(255, 215, 0, 0.4); }
+  50% { transform: scale(1.04); box-shadow: 0 0 22px rgba(255, 107, 107, 0.6); }
+}
+
+/* 独立装备槽 */
+.equipped-weapon, .equipped-armor {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.equip-slot-label {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.6);
+  white-space: nowrap;
+}
+
+.equip-slot {
+  width: 48px;
+  height: 48px;
+  border: 2px dashed rgba(255, 255, 255, 0.25);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  background: rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  position: relative;
+}
+.equip-slot img { max-width: 36px; max-height: 36px; object-fit: contain; }
+.equip-slot:hover { border-color: rgba(255, 255, 255, 0.5); background: rgba(255, 255, 255, 0.05); }
+.equip-slot.empty { border-color: rgba(255, 255, 255, 0.25); }
+.equip-slot .slot-icon { font-size: 1.4rem; }
+
+.equip-slot-name {
+  font-size: 0.7rem;
+  color: #fbbf24;
+  font-weight: 600;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.menu-hints {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+  text-align: center;
+}
+
+.menu-hints p {
+  margin: 6px 0;
+}
+
+/* 装备选择标题区域 */
+.screen-title {
+  font-size: 1.4rem;
+  margin-bottom: 4px;
+  text-align: center;
+}
+
+.screen-subtitle {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* 金币 / 标题栏 */
+.loadout-gold, .shop-gold, .warehouse-gold {
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 6px 12px;
+  background: rgba(255, 215, 0, 0.1);
+  border-radius: 8px;
+  margin-bottom: 10px;
+  display: inline-block;
+  align-self: center;
+}
+
+/* 装备选择：武器/护甲/补给 三栏横向 */
+.loadout-sections {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+
+.loadout-section {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.loadout-section h3 {
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+  color: #ffd700;
+  text-align: center;
+}
+
+/* 物品卡片：横向一排（2列） */
+.item-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+}
+
+.item-card {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 6px 4px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 90px;
+}
+
+.item-card:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: #ff6b6b;
+  transform: translateY(-1px);
+}
+
+.item-card.equipped {
+  background: rgba(251, 191, 36, 0.18);
+  border-color: #fbbf24;
+  box-shadow: 0 0 8px rgba(251, 191, 36, 0.3);
+}
+.item-card.equipped:hover { border-color: #ff6b6b; }
+
+.item-icon {
+  font-size: 1.2rem;
+  margin-bottom: 4px;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.item-icon img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.item-name {
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.item-desc {
+  font-size: 0.62rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 2px;
+  line-height: 1.3;
+}
+
+.item-price {
+  font-size: 0.66rem;
+  color: #ffd700;
+  margin-top: 4px;
+  font-weight: 600;
+  background: rgba(255, 215, 0, 0.1);
+  padding: 1px 4px;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+/* 当前携带栏 */
+.current-loadout {
+  margin: 6px 0 10px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+}
+
+.current-loadout h3 {
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+  text-align: center;
+  color: #00cec9;
+}
+
+.loadout-slots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+}
+
+.loadout-slot {
+  width: 36px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  border: 2px dashed rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+.loadout-slot.filled {
+  background: rgba(255, 107, 107, 0.2);
+  border-style: solid;
+  border-color: #ff6b6b;
+}
+
+/* 底部按钮横向 */
+.loadout-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.loadout-buttons .menu-btn {
+  flex: 1 1 0;
+  min-width: 120px;
+  max-width: 200px;
+  margin: 0;
+  padding: 10px 16px;
+  font-size: 0.85rem;
+}
+
+/* ============ 商店与仓库 ============ */
+.shop-tabs, .warehouse-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+
+.shop-tab, .warehouse-tab {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.shop-tab.active, .warehouse-tab.active,
+.shop-tab:hover, .warehouse-tab:hover {
+  background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+}
+
+.shop-content, .warehouse-content {
+  overflow-y: auto;
+  flex: 1 1 auto;
+  padding-right: 10px;
+  min-height: 200px;
+  max-height: 60vh;
+}
+
+.shop-item, .warehouse-item {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 12px 18px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  justify-content: space-between;
+  transition: all 0.2s;
+}
+
+.shop-item-info, .warehouse-item-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+  min-width: 0;
+}
+
+.shop-item-icon-container {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.shop-item-icon, .warehouse-item-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.shop-img-icon { width: 40px; height: 40px; object-fit: contain; }
+.item-img-icon { max-width: 64px; max-height: 64px; object-fit: contain; }
+
+.shop-item-details, .warehouse-item-details {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+}
+
+.shop-item-details h4, .warehouse-item-details h4 {
+  font-size: 1rem;
+  margin-bottom: 3px;
+}
+
+.shop-item-details p, .warehouse-item-details p {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.shop-item-price, .warehouse-item-value {
+  color: #ffd700;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-right: 16px;
+  white-space: nowrap;
+}
+
+.shop-buy-btn {
+  padding: 8px 20px;
+  background: linear-gradient(135deg, #00cec9, #0984e3);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.shop-buy-btn:hover:not(:disabled) {
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(0, 206, 201, 0.4);
+}
+
+.shop-buy-btn:disabled {
+  background: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.4);
+  cursor: not-allowed;
+}
+
+.warehouse-item.sell-mode:hover {
+  background: rgba(255, 107, 107, 0.2);
+  cursor: pointer;
+  transform: translateX(5px);
+}
+
+/* —— 新仓库行视图（物品 + 价值 + 操作按钮）—— */
+.warehouse-header-hint {
+  padding: 10px 14px 14px;
+  color: rgba(255,255,255,0.55);
+  font-size: 0.82rem;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 10px;
+}
+.warehouse-header-hint b { color: #ffd700; }
+
+.warehouse-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin: 0 10px 6px;
+  background: rgba(255,255,255,0.04);
+  border-left: 3px solid #888;
+  transition: background 0.15s;
+}
+.warehouse-row.rarity-white  { border-left-color: #ccc; }
+.warehouse-row.rarity-green  { border-left-color: #4ade80; background: rgba(74,222,128,0.06); }
+.warehouse-row.rarity-blue   { border-left-color: #60a5fa; background: rgba(96,165,250,0.06); }
+.warehouse-row.rarity-purple { border-left-color: #c084fc; background: rgba(192,132,252,0.07); }
+.warehouse-row.rarity-gold   { border-left-color: #ffd700; background: rgba(255,215,0,0.07); }
+.warehouse-row.rarity-red    { border-left-color: #ef4444; background: rgba(239,68,68,0.08); }
+
+.wh-row-icon { font-size: 26px; flex-shrink: 0; width: 36px; text-align: center; display: flex; align-items: center; justify-content: center; }
+.wh-img-icon { width: 30px; height: 30px; object-fit: contain; }
+.wh-row-info { flex: 1; min-width: 0; }
+.wh-row-name { font-size: 0.92rem; color: #f0f0f0; font-weight: 600; }
+.wh-row-name .wh-row-count { color: rgba(255,255,255,0.5); font-weight: 400; font-size: 0.8em; }
+.wh-row-sub { font-size: 0.75rem; color: rgba(255,255,255,0.5); margin-top: 2px; }
+.wh-row-sub .wh-rarity { font-weight: 600; }
+.wh-row-btns { display: flex; gap: 6px; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; }
+
+.wh-btn {
+  padding: 4px 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+}
+.wh-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+.wh-btn:active { transform: translateY(0); }
+.wh-btn.collect {
+  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  color: #fff;
+}
+.wh-btn.sell {
+  background: linear-gradient(135deg, #b45309, #f59e0b);
+  color: #fff;
+}
+.wh-btn.sell-all {
+  background: rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.7);
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+/* —— 局内背包物品行视图 —— */
+.inv-item-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin: 0 0 5px;
+  background: rgba(255,255,255,0.04);
+  border-left: 3px solid #888;
+}
+.inv-item-row.rarity-white  { border-left-color: #ccc; }
+.inv-item-row.rarity-green  { border-left-color: #4ade80; background: rgba(74,222,128,0.05); }
+.inv-item-row.rarity-blue   { border-left-color: #60a5fa; background: rgba(96,165,250,0.05); }
+.inv-item-row.rarity-purple { border-left-color: #c084fc; background: rgba(192,132,252,0.06); }
+.inv-item-row.rarity-gold   { border-left-color: #ffd700; background: rgba(255,215,0,0.06); }
+.inv-item-row.rarity-red    { border-left-color: #ef4444; background: rgba(239,68,68,0.07); }
+
+.inv-ic { font-size: 24px; flex-shrink: 0; width: 34px; text-align: center; }
+.inv-img-icon { width: 28px; height: 28px; object-fit: contain; }
+.inv-info { flex: 1; }
+.inv-name { font-size: 0.88rem; color: #eee; font-weight: 600; }
+.inv-sub { font-size: 0.72rem; color: rgba(255,255,255,0.45); margin-top: 1px; }
+.inv-rarity { font-weight: 600; }
+.inv-price { color: #ffd700; }
+
+.inv-discard-btn {
+  padding: 3px 10px;
+  background: rgba(239,68,68,0.25);
+  border: 1px solid rgba(239,68,68,0.4);
+  color: #ef4444;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+.inv-discard-btn:hover { background: rgba(239,68,68,0.45); }
+
+.inv-empty-hint {
+  text-align: center;
+  color: rgba(255,255,255,0.4);
+  padding: 40px 20px;
+  font-size: 0.9rem;
+}
+
+.empty-message {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.5);
+  padding: 60px 20px;
+  font-size: 1rem;
+}
+
+/* ============ 物品详情悬浮窗 ============ */
+.item-tooltip {
+  position: fixed;
+  z-index: 99999;
+  background: rgba(15, 15, 30, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 8px;
+  padding: 10px 12px;
+  min-width: 180px;
+  max-width: 260px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+}
+
+.item-tooltip.hidden {
+  display: none;
+}
+
+.tooltip-title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.tooltip-content {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.tooltip-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 4px 0;
+}
+
+.tooltip-row .label {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.tooltip-row .value {
+  font-weight: 600;
+}
+
+.tooltip-row .value.damage { color: #ef4444; }
+.tooltip-row .value.defense { color: #60a5fa; }
+.tooltip-row .value.speed { color: #4ade80; }
+.tooltip-row .value.special { color: #fbbf24; }
+
+/* 武器卡片添加hover效果 */
+.item-card[data-type="weapon"],
+.item-card[data-type="armor"] {
+  cursor: pointer;
+}
+
+.item-card[data-type="weapon"]:hover,
+.item-card[data-type="armor"]:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+/* ============ 游戏界面 ============ */
+.game-screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: #1a1a2e;
+}
+
+.game-hud {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  display: flex;
+  justify-content: space-between;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.hud-left, .hud-center, .hud-right {
+  display: flex;
+  gap: 12px;
+}
+
+.hud-item {
+  background: rgba(0, 0, 0, 0.7);
+  padding: 8px 14px;
+  border-radius: 8px;
+  color: white;
+  font-size: 0.88rem;
+  backdrop-filter: blur(5px);
+  white-space: nowrap;
+}
+
+/* 补给品HUD - 正上方 */
+.supply-hud {
+  position: absolute;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+.supply-hud-item {
+  background: rgba(0, 0, 0, 0.75);
+  padding: 6px 14px;
+  border-radius: 8px;
+  color: white;
+  font-size: 1rem;
+  backdrop-filter: blur(5px);
+  white-space: nowrap;
+  text-align: center;
+  min-width: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.supply-hud-item span {
+  font-weight: bold;
+  margin-left: 4px;
+}
+
+#gameCanvas {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+}
+
+/* ============ 对话气泡 ============ */
+.dialog-bubble {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.9);
+  padding: 12px 22px;
+  border-radius: 15px;
+  color: white;
+  font-size: 0.95rem;
+  z-index: 15;
+  max-width: 260px;
+  animation: dialogPop 0.3s ease;
+  text-align: center;
+}
+
+.dialog-arrow {
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid rgba(0, 0, 0, 0.9);
+}
+
+@keyframes dialogPop {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* ============ 提示框 ============ */
+.prompt-box {
+  position: absolute;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.85);
+  padding: 12px 28px;
+  border-radius: 12px;
+  color: white;
+  z-index: 15;
+  font-size: 0.95rem;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.prompt-box.escape {
+  background: linear-gradient(135deg, #00cec9, #0984e3);
+}
+
+.prompt-box .key {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 4px 10px;
+  border-radius: 6px;
+  margin: 0 5px;
+  font-weight: 600;
+}
+
+/* ============ 搜索进度条 ============ */
+.search-progress-overlay {
+  position: absolute;
+  bottom: 110px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 280px;
+  background: rgba(0, 0, 0, 0.9);
+  padding: 16px 22px;
+  border-radius: 16px;
+  z-index: 18;
+  text-align: center;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.search-progress-label {
+  color: #ffd700;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.search-progress-bar {
+  height: 10px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.search-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #ffd700, #ff6b6b);
+  border-radius: 10px;
+  transition: width 0.1s linear;
+}
+
+/* ============ 搜索结果面板（选择性拾取） ============ */
+.loot-modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(600px, 88vw);
+  max-height: 80vh;
+  background: rgba(15, 20, 40, 0.97);
+  border: 2px solid rgba(255, 215, 0, 0.4);
+  border-radius: 20px;
+  padding: 24px;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(20px);
+}
+
+.loot-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.loot-modal-title {
+  font-size: 1.4rem;
+  color: #ffd700;
+  font-weight: 600;
+}
+
+.loot-modal-info {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.loot-close-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.loot-close-btn:hover {
+  background: rgba(255, 107, 107, 0.3);
+  transform: rotate(90deg);
+}
+
+.loot-items-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 12px;
+  overflow-y: auto;
+  padding: 6px;
+  max-height: 50vh;
+}
+
+.loot-pick-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 14px 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.loot-pick-card:hover {
+  background: rgba(255, 215, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.loot-pick-card.picked {
+  opacity: 0.35;
+  cursor: not-allowed;
+  border-color: rgba(0, 206, 201, 0.5);
+  background: rgba(0, 206, 201, 0.08);
+  transform: scale(0.95);
+}
+
+.loot-pick-icon {
+  font-size: 2.2rem;
+  margin-bottom: 6px;
+}
+.loot-img-icon { width: 40px; height: 40px; object-fit: contain; }
+
+.loot-pick-name {
+  font-size: 0.85rem;
+  color: white;
+  font-weight: 600;
+  text-align: center;
+}
+
+.loot-pick-rarity {
+  font-size: 0.7rem;
+  margin-top: 4px;
+  font-weight: 600;
+}
+
+.loot-pick-price {
+  font-size: 0.78rem;
+  color: #ffd700;
+  margin-top: 4px;
+  background: rgba(255, 215, 0, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.loot-pick-check {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: 0.9rem;
+  color: #00cec9;
+}
+
+/* 品质颜色 */
+.rarity-white   { color: #cccccc; }
+.rarity-green   { color: #4ade80; }
+.rarity-blue    { color: #60a5fa; }
+.rarity-purple  { color: #c084fc; }
+.rarity-gold    { color: #ffd700; }
+.rarity-red     { color: #ef4444; }
+
+/* 品质边框（卡片整体上色） */
+.loot-pick-card.rarity-white   { border-color: rgba(204, 204, 204, 0.4); }
+.loot-pick-card.rarity-green   { border-color: rgba(74, 222, 128, 0.5); background: rgba(74, 222, 128, 0.08); }
+.loot-pick-card.rarity-blue    { border-color: rgba(96, 165, 250, 0.5); background: rgba(96, 165, 250, 0.08); }
+.loot-pick-card.rarity-purple  { border-color: rgba(192, 132, 252, 0.5); background: rgba(192, 132, 252, 0.1); }
+.loot-pick-card.rarity-gold    { border-color: rgba(255, 215, 0, 0.6); background: rgba(255, 215, 0, 0.1); }
+.loot-pick-card.rarity-red     { border-color: rgba(239, 68, 68, 0.6); background: rgba(239, 68, 68, 0.1); }
+
+.loot-modal-footer {
+  margin-top: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.loot-modal-summary {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.loot-modal-summary .total {
+  color: #ffd700;
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+.loot-modal-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.loot-btn {
+  padding: 10px 22px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: all 0.2s;
+  color: white;
+}
+
+.loot-btn.primary {
+  background: linear-gradient(135deg, #00cec9, #0984e3);
+}
+
+.loot-btn.secondary {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.loot-btn.all {
+  background: linear-gradient(135deg, #ffd700, #ff6b6b);
+}
+
+.loot-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+/* ============ 背包 ============ */
+/* —— 仓库维修按钮 & 状态 —— */
+.wh-btn.repair {
+  background: linear-gradient(135deg, #0ea5e9, #38bdf8);
+  color: #fff;
+}
+.wh-status-ok {
+  color: #4ade80;
+  font-size: 0.72rem;
+  padding: 4px 8px;
+  align-self: center;
+  font-weight: 600;
+}
+
+.inventory-panel {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background: rgba(10, 10, 20, 0.92);
+  padding: 18px;
+  border-radius: 15px;
+  z-index: 20;
+  max-width: 480px;
+  width: 460px;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.inventory-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  color: white;
+}
+
+.close-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.close-btn:hover { background: rgba(255, 107, 107, 0.3); }
+
+/* —— 图鉴填充按钮 —— */
+.col-fill-btn {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+.col-fill-btn:hover {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+}
+
+/* —— 小地图 —— */
+.minimap-container {
+  position: absolute;
+  top: 55px; /* 放在HUD血条下方 */
+  right: 10px;
+  background: rgba(15, 23, 42, 0.45); /* 半透明深色背景 */
+  backdrop-filter: blur(4px); /* 背景模糊效果 */
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: 12px;
+  padding: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15); /* 半透明边框 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* 柔和阴影 */
+  z-index: 10;
+}
+
+.minimap-canvas {
+  width: 200px;
+  height: 200px;
+  border-radius: 8px;
+  display: block;
+}
+
+.minimap-legend {
+  display: flex;
+  gap: 12px;
+  margin-top: 6px;
+  font-size: 0.7rem;
+  color: rgba(200, 200, 200, 0.85); /* 半透明文字 */
+  justify-content: center;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  box-shadow: 0 0 4px currentColor; /* 轻微光晕 */
+}
+
+.legend-dot.player { background: #4ade80; color: rgba(74, 222, 128, 0.5); }
+.legend-dot.boss { background: #ef4444; color: rgba(239, 68, 68, 0.5); }
+.legend-dot.escape { background: #fbbf24; color: rgba(251, 191, 36, 0.5); }
+
+.inventory-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 420px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+.inventory-grid::-webkit-scrollbar { width: 4px; }
+.inventory-grid::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 4px; }
+.inventory-grid::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
+
+.inventory-slot { display: none; /* 旧格子模式已废弃 */ }
+
+.inventory-total {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  text-align: right;
+  color: #ffd700;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+/* ============ 已收集面板 ============ */
+.loot-panel {
+  position: absolute;
+  top: 70px;
+  right: 10px;
+  width: 230px;
+  max-height: 320px;
+  background: rgba(0, 0, 0, 0.85);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  border-radius: 12px;
+  padding: 12px;
+  z-index: 12;
+  backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  pointer-events: auto;
+}
+
+.loot-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  margin-bottom: 8px;
+}
+
+.loot-total {
+  color: #ffd700;
+  font-size: 0.9rem;
+}
+
+.loot-list {
+  flex: 1;
+  overflow-y: auto;
+  font-size: 0.82rem;
+  color: #fff;
+}
+
+.loot-empty {
+  color: rgba(255, 255, 255, 0.5);
+  text-align: center;
+  padding: 20px 0;
+  font-size: 0.8rem;
+}
+
+.loot-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 8px;
+  margin-bottom: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  border-left: 3px solid transparent;
+  transition: background 0.2s;
+}
+
+.loot-item:hover { background: rgba(255, 255, 255, 0.12); }
+
+.loot-item.legendary, .loot-item.gold    { border-left-color: #ffd700; background: rgba(255, 215, 0, 0.1); }
+.loot-item.epic,      .loot-item.purple  { border-left-color: #c084fc; background: rgba(192, 132, 252, 0.1); }
+.loot-item.rare,      .loot-item.blue    { border-left-color: #60a5fa; background: rgba(96, 165, 250, 0.1); }
+.loot-item.uncommon,  .loot-item.green   { border-left-color: #4ade80; background: rgba(74, 222, 128, 0.1); }
+.loot-item.common,    .loot-item.white   { border-left-color: #cccccc; }
+.loot-item.red                              { border-left-color: #ef4444; background: rgba(239, 68, 68, 0.15); }
+
+.loot-item-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  flex: 1;
+}
+
+.loot-item-icon { font-size: 1.1rem; flex-shrink: 0; }
+
+.loot-item-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.82rem;
+}
+
+.loot-item-price {
+  color: #ffd700;
+  font-size: 0.78rem;
+  flex-shrink: 0;
+  margin-left: 6px;
+}
+
+/* ============ 拾取日志 ============ */
+.loot-log {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 15;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.log-entry {
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  border-left: 4px solid #ffd700;
+  animation: logFade 2.5s forwards;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.log-entry.legendary, .log-entry.gold    { border-left-color: #ffd700; background: linear-gradient(90deg, rgba(255, 215, 0, 0.3), rgba(0, 0, 0, 0.85)); color: #ffd700; font-weight: 600; font-size: 1rem; }
+.log-entry.epic,      .log-entry.purple  { border-left-color: #c084fc; color: #d4a4ff; }
+.log-entry.rare,      .log-entry.blue    { border-left-color: #60a5fa; color: #a4c8ff; }
+.log-entry.uncommon,  .log-entry.green   { border-left-color: #4ade80; color: #b7f7cc; }
+.log-entry.red                              { border-left-color: #ef4444; color: #ffb0b0; font-weight: 600; }
+
+@keyframes logFade {
+  0%   { opacity: 0; transform: translateY(15px); }
+  10%  { opacity: 1; transform: translateY(0); }
+  80%  { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-10px); }
+}
+
+/* ============ 模态窗口 ============ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 100;
+  backdrop-filter: blur(5px);
+}
+
+.modal-content {
+  text-align: center;
+  color: white;
+  padding: 40px;
+  border-radius: 20px;
+  max-width: 500px;
+  width: 90%;
+}
+
+.modal-content.gameover {
+  background: linear-gradient(135deg, rgba(0, 184, 148, 0.2), rgba(0, 206, 201, 0.2));
+  border: 1px solid rgba(0, 206, 201, 0.3);
+}
+
+.modal-content.death {
+  background: linear-gradient(135deg, rgba(255, 107, 107, 0.2), rgba(238, 90, 36, 0.2));
+  border: 1px solid rgba(255, 107, 107, 0.3);
+}
+
+.gameover-icon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  animation: bounce 0.5s ease infinite alternate;
+}
+
+@keyframes bounce {
+  from { transform: translateY(0); }
+  to { transform: translateY(-10px); }
+}
+
+.gameover-stats {
+  margin: 20px 0;
+  font-size: 1.05rem;
+}
+
+.gameover-stats p { margin: 10px 0; }
+
+.death-message {
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 10px;
+}
+
+/* ============ 模态框（商店/仓库/图鉴） ============ */
+.modal-content.shop-modal,
+.modal-content.warehouse-modal,
+.modal-content.collection-modal {
+  text-align: left;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 28px 32px;
+  width: min(720px, 94vw);
+}
+
+.modal-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.modal-header-row h2 {
+  color: #ffd700;
+  font-size: 1.5rem;
+}
+
+.modal-subtitle {
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+.shop-content, .warehouse-content {
+  overflow-y: auto;
+  flex: 1;
+  padding-right: 8px;
+  min-height: 180px;
+  max-height: 50vh;
+}
+
+/* ============ 图鉴系统 ============ */
+.collection-stats-row {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.col-stat {
+  background: rgba(255, 215, 0, 0.1);
+  border: 1px solid rgba(255, 215, 0, 0.25);
+  border-radius: 12px;
+  padding: 12px 28px;
+  text-align: center;
+}
+
+.col-stat-val {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #ffd700;
+}
+
+.col-stat-label {
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 2px;
+}
+
+.collection-bonus-panel {
+  background: rgba(0, 206, 201, 0.08);
+  border: 1px solid rgba(0, 206, 201, 0.25);
+  border-radius: 12px;
+  padding: 14px 18px;
+  margin-bottom: 14px;
+}
+
+.collection-bonus-panel h4 {
+  font-size: 0.95rem;
+  color: #00cec9;
+  margin-bottom: 10px;
+}
+
+.bonus-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 8px;
+}
+
+.bonus-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 12px;
+  background: rgba(0, 206, 201, 0.08);
+  border-radius: 8px;
+  font-size: 0.82rem;
+}
+
+.bonus-item-name { color: rgba(255,255,255,0.8); }
+
+.bonus-item-val { color: #4ade80; font-weight: 600; }
+
+.collection-content {
+  overflow-y: auto;
+  flex: 1;
+  min-height: 120px;
+  max-height: 40vh;
+  padding-right: 6px;
+}
+
+.collection-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  margin-bottom: 8px;
+  border-left: 3px solid transparent;
+  transition: all 0.2s;
+}
+
+.collection-item.rarity-white   { border-left-color: #cccccc; }
+.collection-item.rarity-green   { border-left-color: #4ade80; background: rgba(74, 222, 128, 0.06); }
+.collection-item.rarity-blue    { border-left-color: #60a5fa; background: rgba(96, 165, 250, 0.06); }
+.collection-item.rarity-purple  { border-left-color: #c084fc; background: rgba(192, 132, 252, 0.08); }
+.collection-item.rarity-gold    { border-left-color: #ffd700; background: rgba(255, 215, 0, 0.08); }
+.collection-item.rarity-red     { border-left-color: #ef4444; background: rgba(239, 68, 68, 0.08); }
+
+.col-item-icon { font-size: 1.8rem; flex-shrink: 0; }
+
+.col-item-info { flex: 1; min-width: 0; }
+
+.col-item-name {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: white;
+}
+
+.col-item-desc {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.55);
+  margin-top: 2px;
+}
+
+.collection-item.unlit {
+  opacity: 0.4;
+  filter: grayscale(1);
+  border-left-color: rgba(255,255,255,0.2) !important;
+  background: rgba(255,255,255,0.03) !important;
+}
+
+.col-item-badge {
+  background: rgba(0, 206, 201, 0.2);
+  color: #4ade80;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.collection-empty {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.4);
+  padding: 40px 20px;
+  font-size: 0.9rem;
+}
+
+/* ============ 局内背包丢弃按钮 ============ */
+.inventory-slot.filled {
+  border-color: #ff6b6b;
+  background: rgba(255, 107, 107, 0.15);
+  position: relative;
+}
+
+.inv-slot-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  font-size: 1.4rem;
+  position: relative;
+}
+
+.inv-slot-discard {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 18px;
+  height: 18px;
+  background: #ef4444;
+  border: none;
+  border-radius: 50%;
+  color: white;
+  font-size: 0.7rem;
+  line-height: 18px;
+  text-align: center;
+  cursor: pointer;
+  z-index: 2;
+  padding: 0;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.inv-slot-discard:hover {
+  background: #dc2626;
+  transform: scale(1.15);
+}
+
+/* ============ 响应式 ============ */
+@media (max-width: 1100px) {
+  .loadout-sections { grid-template-columns: 1fr 1fr; }
+  .menu-content { padding: 24px; }
+  .game-title { font-size: 2.3rem; }
+}
+
+@media (max-width: 720px) {
+  .loadout-sections { grid-template-columns: 1fr; }
+  .menu-content { padding: 18px; }
+  .game-title { font-size: 2rem; }
+  .hud-item { font-size: 0.8rem; padding: 6px 10px; }
+  .loot-panel { width: 200px; font-size: 0.8rem; }
+  .shop-item-details h4, .warehouse-item-details h4 { font-size: 0.9rem; }
+  .shop-item-details p, .warehouse-item-details p { font-size: 0.72rem; }
+  .menu-btn { padding: 12px 18px; font-size: 1rem; }
+}
